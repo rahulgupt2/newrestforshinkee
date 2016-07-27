@@ -25,9 +25,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 
-
-
-
 /*
  * @RestController : First of all, we are using Spring 4 new @RestController
  * annotation. This annotation eliminates the need of annotating each method
@@ -89,7 +86,7 @@ public class FindEntityController {
 		userFive.setUserAddress("ghorpadi");
 		userFive.setUserName("varun");
 		save(userFive);
-	
+
 	}
 	
 	
@@ -119,7 +116,7 @@ public class FindEntityController {
 	}		
 	*/
 	
-/*	
+	
 	@CrossOrigin
 	@RequestMapping(value = "/user", method = RequestMethod.GET ,
 	produces = MediaType.APPLICATION_JSON_VALUE)
@@ -142,7 +139,7 @@ public class FindEntityController {
 		}	
 		return new ResponseEntity<User>(user,HttpStatus.OK);
 	}
-*/	
+	
 	
 /*		
 	@CrossOrigin
