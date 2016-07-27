@@ -89,7 +89,6 @@ public class FindEntityController {
 		userFive.setUserAddress("ghorpadi");
 		userFive.setUserName("varun");
 		save(userFive);
-
 	
 	}
 	
