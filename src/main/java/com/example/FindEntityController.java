@@ -141,7 +141,7 @@ public class FindEntityController {
 	}
 	
 	
-/*		
+		
 	@CrossOrigin
 	@RequestMapping(value = "/user", method = RequestMethod.POST ,
 	consumes = MediaType.APPLICATION_JSON_VALUE,
@@ -157,7 +157,7 @@ public class FindEntityController {
 			return new ResponseEntity<User>(user, HttpStatus.BAD_REQUEST);
 		}				
 		return new ResponseEntity<User>(userCreated, HttpStatus.CREATED);
-}*/
+}
 	
 }	
 	
