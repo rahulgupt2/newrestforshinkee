@@ -58,6 +58,19 @@ public class FindEntityController {
 	return user;	
 	}
 	
+private static boolean delete(String userId) {
+			
+	
+		
+	return false;	
+	}
+	
+	
+	
+	
+	
+	
+	
 	static {
 		User userOne = new User();
 		userOne.setUserAddress("sb road");
@@ -159,6 +172,28 @@ public class FindEntityController {
 		return new ResponseEntity<User>(userCreated, HttpStatus.CREATED);
 }
 	
+	
+	
+	
+	
+	@CrossOrigin
+	@RequestMapping(value = "/user/{id}", method = RequestMethod.DELETE ,
+	
+	produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> deleteUser(@PathVariable("id") BigInteger id) {
+			
+	boolean flag = false;		
+		for(BigInteger key : userMap.keySet()) {
+			if(key.equals(id)) {
+				flag = true;				
+			}	
+		}		
+		if(flag == true) {
+			userMap.remove(id);
+			return  new ResponseEntity<String>("{ \"message\" : \"user removed succefully\" } ", HttpStatus.OK);
+		}		
+		return  new ResponseEntity<String>("{ \"message\" : \"user not found\" } ", HttpStatus.OK);	
+	}		
 }	
 	
 	
