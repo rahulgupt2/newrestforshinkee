@@ -160,8 +160,7 @@ private static boolean delete(String userId) {
 	consumes = MediaType.APPLICATION_JSON_VALUE,
 	produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<User> PostUser(@RequestBody User user) {
-		
-		
+				
 		if(user == null) {
 			return new ResponseEntity<User>(user, HttpStatus.BAD_REQUEST);
 		}		
@@ -170,11 +169,7 @@ private static boolean delete(String userId) {
 			return new ResponseEntity<User>(user, HttpStatus.BAD_REQUEST);
 		}				
 		return new ResponseEntity<User>(userCreated, HttpStatus.CREATED);
-}
-	
-	
-	
-	
+	}
 	
 	@CrossOrigin
 	@RequestMapping(value = "/user/{id}", method = RequestMethod.DELETE ,
@@ -193,7 +188,27 @@ private static boolean delete(String userId) {
 			return  new ResponseEntity<String>("{ \"message\" : \"user removed succefully\" } ", HttpStatus.OK);
 		}		
 		return  new ResponseEntity<String>("{ \"message\" : \"user not found\" } ", HttpStatus.OK);	
-	}		
+	}
+	
+	
+	@CrossOrigin
+	@RequestMapping(value = "/user", method = RequestMethod.PUT ,	
+	produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> putUser(@RequestBody User user) {
+			
+	BigInteger id = user.getUserId();	
+	boolean flag = false;		
+		for(BigInteger key : userMap.keySet()) {
+			if(key.equals(id)) {
+				flag = true;				
+			}	
+		}		
+		if(flag == true) {
+			userMap.put(id, user);
+			return  new ResponseEntity<String>("{ \"message\" : \"user updated succefully\" } ", HttpStatus.OK);
+		}		
+		return  new ResponseEntity<String>("{ \"message\" : \"user not found\" } ", HttpStatus.OK);	
+	}	
 }	
 	
 	
