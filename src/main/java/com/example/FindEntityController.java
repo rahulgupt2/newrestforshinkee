@@ -40,7 +40,7 @@ public class FindEntityController {
 	
 	private static int number;
 	private static int number1;
-
+	int i = 0;
 	private static BigInteger nextId;
 	private static Map<BigInteger, User> userMap;
 	
@@ -101,9 +101,6 @@ private static boolean delete(String userId) {
 		save(userFive);
 
 	}
-	
-	
-	
 	
 	
 	
