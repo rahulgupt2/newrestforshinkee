@@ -214,7 +214,10 @@ private static boolean delete(String userId) {
 	
 		
 		String fileName = file.getOriginalFilename();
-		return new ResponseEntity<String>(" { \"message\" : \"" + fileName + "\" } ", HttpStatus.OK);
+		return new ResponseEntity<String>(" { \"messageOne\" : \"" + fileName + "\", \"messageTwo\" : \"file uploaded successfully\" } "
+				
+				
+				, HttpStatus.OK);
 		
 	}
 	
