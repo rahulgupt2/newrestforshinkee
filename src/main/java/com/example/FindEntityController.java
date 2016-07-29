@@ -2,7 +2,10 @@ package com.example;
 
 
 
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.math.BigInteger;
 import java.util.Collection;
 import java.util.HashMap;
@@ -23,6 +26,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+
+import io.undertow.attribute.RequestMethodAttribute;
 
 
 /*
@@ -112,6 +117,17 @@ private static boolean delete(String userId) {
 					method = RequestMethod.GET,
 					produces = MediaType.APPLICATION_JSON_VALUE)	
 	public ResponseEntity<Collection<User>> getUsers() {
+				
+		Collection<User> users =  userMap.values();		
+		return new ResponseEntity<Collection<User>>(users, HttpStatus.OK);
+				
+	}
+	
+	@CrossOrigin
+	@RequestMapping(value = "/users",
+					method = RequestMethod.OPTIONS,
+					produces = MediaType.APPLICATION_JSON_VALUE)	
+	public ResponseEntity<Collection<User>> getUserList() {
 				
 		Collection<User> users =  userMap.values();		
 		return new ResponseEntity<Collection<User>>(users, HttpStatus.OK);
@@ -210,14 +226,26 @@ private static boolean delete(String userId) {
 	@CrossOrigin
 	@RequestMapping(method = RequestMethod.POST, value = "/FileUpload", 
 			produces = MediaType.APPLICATION_JSON_VALUE)	
-	public ResponseEntity<String> fileUpload(@RequestParam("file") MultipartFile file) {
+	public ResponseEntity<String> fileUpload(@RequestParam("file") MultipartFile file) throws IOException {
 	
 		
 		String fileName = file.getOriginalFilename();
-		return new ResponseEntity<String>(" { \"messageOne\" : \"" + fileName + "\", \"messageTwo\" : \"file uploaded successfully\" } "
-				
-				
-				, HttpStatus.OK);
+		String path = "src\\main\\resources\\static\\images\\" + fileName;
+		
+	String pathToSend =  "https://shinkeetechm.herokuapp.com" + "/images/" + fileName;
+	//	String pathToSend =  "/images/" + fileName;
+		byte[] bytes = file.getBytes();
+		BufferedOutputStream buffStream = new BufferedOutputStream(
+				new FileOutputStream(new File(path)));
+		
+		
+		buffStream.write(bytes);
+		buffStream.close();
+		
+		
+		return new ResponseEntity<String>(" { \"messageOne\" : \"" + fileName + "\", "
+				+ "\"messageTwo\" : \"file uploaded successfully\","
+				+ "\"path\" : \"" + pathToSend + "\" } ", HttpStatus.OK);
 		
 	}
 	
