@@ -205,7 +205,20 @@ private static boolean delete(String userId) {
 			return  new ResponseEntity<String>("{ \"message\" : \"user updated succefully\" } ", HttpStatus.OK);
 		}		
 		return  new ResponseEntity<String>("{ \"message\" : \"user not found\" } ", HttpStatus.OK);	
-	}	
+	}
+	
+	@CrossOrigin
+	@RequestMapping(method = RequestMethod.POST, value = "/FileUpload", 
+			produces = MediaType.APPLICATION_JSON_VALUE)	
+	public ResponseEntity<String> fileUpload(@RequestParam("file") MultipartFile file) {
+	
+		
+		String fileName = file.getOriginalFilename();
+		return new ResponseEntity<String>(" { \"message\" : \"" + fileName + "\" } ", HttpStatus.OK);
+		
+	}
+	
+	
 }	
 	
 	
