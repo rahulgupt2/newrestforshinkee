@@ -4,12 +4,19 @@ package com.example;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.math.BigInteger;
+import java.net.URL;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,7 +48,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class FindEntityController {
 
 	
-	
+	private static final int BUFFER_SIZE = 4096;
 	private static int number;
 	private static int number1;
 	int i = 0;
@@ -62,15 +69,7 @@ public class FindEntityController {
 	return user;	
 	}
 	
-private static boolean delete(String userId) {
-			
-	
-		
-	return false;	
-	}
-	
-	
-	
+
 	
 	
 	
@@ -229,14 +228,23 @@ private static boolean delete(String userId) {
 	
 		
 		String fileName = file.getOriginalFilename();
+			
 		String path = "src\\main\\resources\\static\\images\\" + fileName;
 		
+		String path1 = "http://localhost:8080/images/" + fileName;	
+	
+		URL url = new URL(path1);
+        
+	
 	String pathToSend =  "https://shinkeetechm.herokuapp.com" + "/images/" + fileName;
+	
+	System.out.println(url.toString());
 	//	String pathToSend =  "/images/" + fileName;
 		byte[] bytes = file.getBytes();
 		BufferedOutputStream buffStream = new BufferedOutputStream(
 				new FileOutputStream(new File(path)));
 		
+			
 		
 		buffStream.write(bytes);
 		buffStream.close();
@@ -247,6 +255,60 @@ private static boolean delete(String userId) {
 				+ "\"path\" : \"" + pathToSend + "\" } ", HttpStatus.OK);
 		
 	}
+	
+	
+	@CrossOrigin
+	@RequestMapping(value = "/DownloadReport",method = RequestMethod.GET)
+	public void downloadZipFile(HttpServletRequest request,
+            HttpServletResponse response) throws IOException {
+		// TODO Auto-generated method stub
+		
+		
+		// get absolute path of the application
+        ServletContext context = request.getServletContext();
+        //String appPath = context.getRealPath("");
+        String appPath = System.getProperty("user.dir");
+        System.out.println("appPath = " + appPath);
+ 
+       // String fullPath = appPath+"\\DocumnetStore\\"+"Response.csv";
+        String fullPath = "bower_components.rar";
+        
+        System.out.println(fullPath);
+        File downloadFile = new File(fullPath);
+        FileInputStream inputStream = new FileInputStream(downloadFile);
+         
+        // get MIME type of the file
+        String mimeType = context.getMimeType(fullPath);
+        if (mimeType == null) {
+            // set to binary type if MIME mapping not found
+            mimeType = "application/x-rar-compressed";
+        }
+        System.out.println("MIME type: " + mimeType);
+ 
+        // set content attributes for the response
+        response.setContentType(mimeType);
+        response.setContentLength((int) downloadFile.length());
+ 
+        // set headers for the response
+        String headerKey = "Content-Disposition";
+        String headerValue = String.format("attachment; filename=\"%s\"",
+                downloadFile.getName());
+        response.setHeader(headerKey, headerValue);
+         
+        // get output stream of the response
+        OutputStream outStream = response.getOutputStream();
+ 
+        byte[] buffer = new byte[BUFFER_SIZE];
+        int bytesRead = -1;
+ 
+        // write bytes read from the input stream into the output stream
+        while ((bytesRead = inputStream.read(buffer)) != -1) {
+            outStream.write(buffer, 0, bytesRead);
+        } 
+        inputStream.close();
+        outStream.close();	
+	}
+	
 	
 	
 }	

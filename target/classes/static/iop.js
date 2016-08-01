@@ -1,8 +1,9 @@
 var app=angular.module("myModule",[]);
 
-app.run(function($http) {
-  $http.defaults.headers.common.Authorization = 'Basic cmFodWw6cmFodWwxMjM0';
-});
+//app.run(function($http) {
+// // $http.defaults.headers.common.Authorization = 'Basic cmFodWw6cmFodWwxMjM0';
+//	 $http.defaults.headers.common.Authorization = 'Basic cmhfhfghhfgFodWw6cmFodWwxMjMgdfgdh0';
+//});
 app.controller("myController",function($scope,$http)
             {
 				
