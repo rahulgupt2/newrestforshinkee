@@ -513,6 +513,60 @@ public class FindEntityController {
 	
 	
 	
+
+	@CrossOrigin
+	@RequestMapping(value = "/DownloadAngularProject",method = RequestMethod.GET)
+	public void downloadAngularProject(HttpServletRequest request,
+            HttpServletResponse response) throws IOException {
+		// TODO Auto-generated method stub
+		
+		
+		// get absolute path of the application
+        ServletContext context = request.getServletContext();
+        //String appPath = context.getRealPath("");
+        String appPath = System.getProperty("user.dir");
+        System.out.println("appPath = " + appPath);
+ 
+       // String fullPath = appPath+"\\DocumnetStore\\"+"Response.csv";
+        String fullPath = "static.rar";
+        
+        System.out.println(fullPath);
+        File downloadFile = new File(fullPath);
+        FileInputStream inputStream = new FileInputStream(downloadFile);
+         
+        // get MIME type of the file
+        String mimeType = context.getMimeType(fullPath);
+        if (mimeType == null) {
+            // set to binary type if MIME mapping not found
+            mimeType = "application/x-rar-compressed";
+        }
+        System.out.println("MIME type: " + mimeType);
+ 
+        // set content attributes for the response
+        response.setContentType(mimeType);
+        response.setContentLength((int) downloadFile.length());
+ 
+        // set headers for the response
+        String headerKey = "Content-Disposition";
+        String headerValue = String.format("attachment; filename=\"%s\"",
+                downloadFile.getName());
+        response.setHeader(headerKey, headerValue);
+         
+        // get output stream of the response
+        OutputStream outStream = response.getOutputStream();
+ 
+        byte[] buffer = new byte[BUFFER_SIZE];
+        int bytesRead = -1;
+ 
+        // write bytes read from the input stream into the output stream
+        while ((bytesRead = inputStream.read(buffer)) != -1) {
+            outStream.write(buffer, 0, bytesRead);
+        } 
+        inputStream.close();
+        outStream.close();	
+	}
+	
+	
 	
 }	
 	
